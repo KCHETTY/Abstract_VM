@@ -3,3 +3,5 @@ http://www.cprogramming.com/tutorial/templates.html
 http://en.cppreference.com/w/cpp/language/class_template
 https://www.tutorialspoint.com/cplusplus/cpp_templates.htm
 http://www.newty.de/fpt/fpt.html
+http://www.cs.man.ac.uk/~pjj/farrell/comp3.html
+https://stackoverflow.com/questions/692752/naming-conventions-for-template-types

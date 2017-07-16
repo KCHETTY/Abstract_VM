@@ -10,7 +10,6 @@ class virtual_machine
         type_factory factory;
         std::deque< IOperand * > stack;
 
-
     public:
 
         void create_test(std::string temp)

@@ -5,3 +5,9 @@ https://www.tutorialspoint.com/cplusplus/cpp_templates.htm
 http://www.newty.de/fpt/fpt.html
 http://www.cs.man.ac.uk/~pjj/farrell/comp3.html
 https://stackoverflow.com/questions/692752/naming-conventions-for-template-types
+http://www.cplusplus.com/reference/cstdint/
+http://jeelabs.org/book/1506d/index.html
+https://stackoverflow.com/questions/332030/when-should-static-cast-dynamic-cast-const-cast-and-reinterpret-cast-be-used
+http://www.cplusplus.com/reference/string/stod/
+http://www.cplusplus.com/reference/cstdint/
+https://developer.mbed.org/handbook/C-Data-Types

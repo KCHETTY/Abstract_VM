@@ -5,14 +5,14 @@
 template <eOperandType type, class T> class Operand : public IOperand
 {
     private:
-        //T value;
-        std::string value;
+        T num_value;
+        std::string str_value;
 
         Operand();
 
     public:
 
-        Operand( std::string tmp_val );
+        Operand( T tmp_val , std::string str_tmp_val );
 
         //int getPrecision( void ) const; // Precision of the type of the instance
         eOperandType getType( void ) const; // Type of the instance
@@ -27,10 +27,12 @@ template <eOperandType type, class T> class Operand : public IOperand
         ~Operand( void ) {}
 };
 
-template<eOperandType type, class T> Operand<type, T>::Operand( std::string tmp_val )
+template<eOperandType type, class T> Operand<type, T>::Operand( T tmp_val ,std::string str_tmp_val )
 {
-    this->value = tmp_val;
-    std::cout << this->value << std::endl;
+    this->str_value = str_tmp_val;
+    this->num_value = tmp_val;
+    std::cout << this->str_value << std::endl;
+    std::cout << static_cast<int> (this->num_value) << " " << sizeof(this->num_value) << std::endl;
 }
 
 template<eOperandType type, class T> eOperandType Operand<type, T>::getType() const

@@ -14,11 +14,12 @@ class virtual_machine
 
         void create_test(std::string temp)
         {
-            this->stack.push_front(this->Tfactory.createOperand(eOperandType::INT8, temp));
+            std::cout << temp << std::endl;
+            this->stack.push_front(this->Tfactory.createOperand(eOperandType::INT8, "54"));
             std::cout << this->stack[0]->getType() << std::endl;
 
-            this->stack.push_front(this->Tfactory.createOperand(eOperandType::INT16, temp));
-            std::cout << this->stack[0]->getType() << std::endl;
+            //this->stack.push_front(this->Tfactory.createOperand(eOperandType::INT16, "-30008"));
+            //std::cout << this->stack[0]->getType() << std::endl;
 
 
             /*this->Tfactory.createOperand(INT16, temp);

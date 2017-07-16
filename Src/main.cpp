@@ -9,6 +9,6 @@ int main()
 
     //std::cout << template_test.getType() std::endl;
 
-    test.create_test("First_test");
+    test.create_test("4");
     return (0);
 }

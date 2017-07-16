@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IOperand.hpp"
+#include "Operand.hpp"
 #include <iostream>
 
 class factory

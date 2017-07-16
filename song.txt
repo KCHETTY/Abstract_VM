@@ -1,0 +1,5 @@
+https://stackoverflow.com/questions/6013245/are-types-like-uint32-int32-uint64-int64-defined-in-any-stdlib-header
+http://www.cprogramming.com/tutorial/templates.html
+http://en.cppreference.com/w/cpp/language/class_template
+https://www.tutorialspoint.com/cplusplus/cpp_templates.htm
+http://www.newty.de/fpt/fpt.html

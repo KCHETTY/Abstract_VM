@@ -3,9 +3,13 @@
 #include "IOperand.hpp"
 #include <iostream>
 
-class type_factory
+class factory
 {
     private:
+
+        //function pointer definition
+        typedef IOperand const * (factory::*func_ptr)( std::string const & value ) const;
+        func_ptr func_arr[5] = {&factory::createInt8, &factory::createInt16, &factory::createInt32, &factory::createfloat, &factory::createdouble};
 
         IOperand const *createInt8( std::string const & value ) const;
         IOperand const *createInt16( std::string const & value ) const;

@@ -4,7 +4,7 @@
 #include <iostream>
 #include <stdint.h>
 
-enum eOperandType { INT8, INT16, INT32, FlOAT, DOUBLE};
+enum eOperandType { INT8, INT16, INT32, FLOAT, DOUBLE};
 
 class IOperand
 {

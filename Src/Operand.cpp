@@ -1,8 +1,6 @@
-#pragma once
+#include "../Inc/Operand.hpp"
 
-#include "IOperand.hpp"
-
-template <eOperandType type, class T> class Operand : public IOperand
+/*template <eOperandType type, class T> class Operand : public IOperand
 {
     private:
         T value;
@@ -22,4 +20,4 @@ template <eOperandType type, class T> class Operand : public IOperand
 
         std::string const & toString( void ) const; // String representation of the instance
         ~Operand( void ) {}
-};
+};*/

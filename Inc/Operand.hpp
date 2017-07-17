@@ -18,19 +18,20 @@ template <eOperandType type, class T> class Operand : public IOperand
         int getPrecision( void ) const; // Precision of the type of the instance
         eOperandType getType( void ) const; // Type of the instance
 
-        IOperand const * create_obj(eOperandType type_tmp, long double value);
+        IOperand const * create_obj(eOperandType type_tmp, long double value) const;
 
-        IOperand const * operator+( IOperand const & obj ); // Sum
-        IOperand const * operator-( IOperand const & obj ); // Difference
-        IOperand const * operator*( IOperand const & obj ); // Product
-        IOperand const * operator/( IOperand const & obj ); // Quotient
-        IOperand const * operator%( IOperand const & obj ); // Modulo
+        IOperand const * operator+( IOperand const & obj ) const;
+        IOperand const * operator-( IOperand const & obj ) const;
+        IOperand const * operator*( IOperand const & obj ) const;
+        IOperand const * operator/( IOperand const & obj ) const;
+        IOperand const * operator%( IOperand const & obj ) const;
+
 
         std::string const & toString( void ) const; // String representation of the instance
         ~Operand( void ) {}
 };
 
-template<eOperandType type, class T> IOperand const * Operand<type, T>::create_obj(eOperandType type_tmp, long double value)
+template<eOperandType type, class T> IOperand const * Operand<type, T>::create_obj(eOperandType type_tmp, long double value) const
 {
     switch (type_tmp)
     {
@@ -49,7 +50,7 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::create_o
     return (NULL);
 }
 
-template<eOperandType type, class T> IOperand const * Operand<type, T>::operator+( IOperand const & obj )
+template<eOperandType type, class T> IOperand const * Operand<type, T>::operator+( IOperand const & obj ) const
 {
     long double tmp = std::stold(this->str_value) + std::stold(obj.toString());
 
@@ -58,7 +59,7 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
     return ( create_obj(obj.getType(), tmp) );
 }
 
-template<eOperandType type, class T> IOperand const * Operand<type, T>::operator-( IOperand const & obj )
+template<eOperandType type, class T> IOperand const * Operand<type, T>::operator-( IOperand const & obj ) const
 {
     long double tmp = std::stold(this->str_value) - std::stold(obj.toString());
 
@@ -67,7 +68,7 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
     return ( create_obj(obj.getType(), tmp) );
 }
 
-template<eOperandType type, class T> IOperand const * Operand<type, T>::operator*( IOperand const & obj )
+template<eOperandType type, class T> IOperand const * Operand<type, T>::operator*( IOperand const & obj ) const
 {
     long double tmp = std::stold(this->str_value) * std::stold(obj.toString());
 
@@ -76,7 +77,7 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
     return ( create_obj(obj.getType(), tmp) );
 }
 
-template<eOperandType type, class T> IOperand const * Operand<type, T>::operator/( IOperand const & obj )
+template<eOperandType type, class T> IOperand const * Operand<type, T>::operator/( IOperand const & obj ) const
 {
     long double tmp = std::stold(this->str_value) / std::stold(obj.toString());
 
@@ -85,7 +86,7 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
     return ( create_obj(obj.getType(), tmp) );
 }
 
-template<eOperandType type, class T> IOperand const * Operand<type, T>::operator%( IOperand const & obj )
+template<eOperandType type, class T> IOperand const * Operand<type, T>::operator%( IOperand const & obj ) const
 {
     long double tmp = fmod(std::stold(this->str_value) , std::stold(obj.toString()));
 
@@ -98,8 +99,8 @@ template<eOperandType type, class T> Operand<type, T>::Operand( T tmp_val ,std::
 {
     this->str_value = str_tmp_val;
     this->num_value = tmp_val;
-    std::cout << this->str_value << std::endl;
-    std::cout << static_cast<int> (this->num_value) << " " << sizeof(this->num_value) << std::endl;
+    //std::cout << this->str_value << std::endl;
+    //std::cout << static_cast<int> (this->num_value) << " " << sizeof(this->num_value) << std::endl;
 }
 
 template<eOperandType type, class T> std::string const & Operand<type, T>::toString() const

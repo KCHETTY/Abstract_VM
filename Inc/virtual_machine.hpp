@@ -8,7 +8,7 @@ class virtual_machine
     private:
 
         factory Tfactory;
-        std::deque< const IOperand * > stack;
+        std::deque< IOperand const * > stack;
 
     public:
 
@@ -18,14 +18,16 @@ class virtual_machine
             this->stack.push_front(this->Tfactory.createOperand(eOperandType::INT8, "54"));
             std::cout << this->stack[0]->getType() << std::endl;
 
-            //this->stack.push_front(this->Tfactory.createOperand(eOperandType::INT16, "-30008"));
-            //std::cout << this->stack[0]->getType() << std::endl;
+            this->stack.push_front(this->Tfactory.createOperand(eOperandType::FLOAT, "108"));
+            std::cout << this->stack[0]->getType() << std::endl;
+
+            std::cout << this->stack.size() << std::endl;
+
+            this->stack.push_front((*this->stack[0] + *this->stack[1]));
+
+            std::cout << this->stack[0]->getType() << " " << this->stack[0]->toString() << std::endl;
 
 
-            /*this->Tfactory.createOperand(INT16, temp);
-            this->Tfactory.createOperand(INT32, temp);
-            this->Tfactory.createOperand(DOUBLE, temp);
-            this->Tfactory.createOperand(FLOAT, temp);*/
         }
 
 

@@ -10,7 +10,7 @@ HEADER = ./Inc/
 
 SRC_PATH = ./Src/
 
-SRC = $(SRC_PATH)main.cpp $(SRC_PATH)virtual_machine.cpp $(SRC_PATH)factory.cpp
+SRC = $(SRC_PATH)main.cpp $(SRC_PATH)virtual_machine.cpp $(SRC_PATH)factory.cpp $(SRC_PATH)lexer_parser.cpp
 
 OBJ = $(SRC:.cpp=.o)
 

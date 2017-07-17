@@ -26,8 +26,6 @@ class virtual_machine
             this->stack.push_front((*this->stack[0] + *this->stack[1]));
 
             std::cout << this->stack[0]->getType() << " " << this->stack[0]->toString() << std::endl;
-
-
         }
 
 

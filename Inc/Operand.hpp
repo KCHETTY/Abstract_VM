@@ -5,13 +5,12 @@
 template <eOperandType type, class T> class Operand : public IOperand
 {
     private:
+        T num_value;
         std::string str_value;
 
         Operand();
 
     public:
-
-        T num_value;
 
         Operand( T tmp_val , std::string str_tmp_val );
 

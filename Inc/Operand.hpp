@@ -32,14 +32,16 @@ template <eOperandType type, class T> class Operand : public IOperand
 
 template<eOperandType type, class T> IOperand const * Operand<type, T>::create_obj(eOperandType type_tmp, long double value) const
 {
+    int tmp = static_cast<int> (value);
+
     switch (type_tmp)
     {
         case eOperandType::INT8:
-            return ( new Operand<eOperandType::INT8, int8_t>::Operand( static_cast<int8_t> (value), std::to_string(value) ) );
+            return ( new Operand<eOperandType::INT8, int8_t>::Operand( static_cast<int8_t> (value), std::to_string(tmp) ) );
         case eOperandType::INT16:
-            return ( new Operand<eOperandType::INT16, int16_t>::Operand( static_cast<int16_t> (value), std::to_string(value) ) );
+            return ( new Operand<eOperandType::INT16, int16_t>::Operand( static_cast<int16_t> (value), std::to_string(tmp) ) );
         case eOperandType::INT32:
-            return ( new Operand<eOperandType::INT32, int32_t>::Operand( static_cast<int32_t> (value), std::to_string(value) ) );
+            return ( new Operand<eOperandType::INT32, int32_t>::Operand( static_cast<int32_t> (value), std::to_string(tmp) ) );
         case eOperandType::FLOAT:
             return ( new Operand<eOperandType::FLOAT, float_t>::Operand( static_cast<float_t> (value) , std::to_string(value) ));
         case eOperandType::DOUBLE:
@@ -99,7 +101,7 @@ template<eOperandType type, class T> Operand<type, T>::Operand( T tmp_val ,std::
     this->str_value = str_tmp_val;
     this->num_value = tmp_val;
     //std::cout << this->str_value << std::endl;
-    //std::cout << static_cast<int> (this->num_value) << " " << sizeof(this->num_value) << std::endl;
+    std::cout << sizeof(this->num_value) << std::endl;
 }
 
 template<eOperandType type, class T> std::string const & Operand<type, T>::toString() const

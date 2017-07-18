@@ -12,8 +12,10 @@ class virtual_machine
         lexer_parser input;
         factory Tfactory;
 
-        std::deque< IOperand const * > stack;
+        std::deque < IOperand const * > stack;
+        std::vector < std::string > commands;
 
+        bool is_error;
 
         virtual_machine();
 
@@ -22,5 +24,7 @@ class virtual_machine
         virtual_machine( int argc, char **argv);
 
         void execute_commands();
+        void push_operand( std::string op_type, std::string val );
+        void dump();
 
 };

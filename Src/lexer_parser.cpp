@@ -24,7 +24,7 @@ std::string lexer_parser::trim( std::string line )
     return (tmp);
 }
 
-void lexer_parser::process_data(int count, char **file)
+bool lexer_parser::process_data(int count, char **file, std::vector< std::string > &tokenz)
 {
     if (count > 1)
     {
@@ -65,10 +65,26 @@ void lexer_parser::process_data(int count, char **file)
         std::cout << this->file_data[count] << std::endl;
     }
 
-    lexer();
+    lexer( tokenz );
+
+    if (this->error_data.size() == 0)
+        parser();
+
+    if (this->error_data.size() > 0)
+    {
+        for (unsigned int counter = 0; counter < this->error_data.size(); counter++)
+        {
+            std::cout << this->error_data[counter] << std::endl;
+        }
+        std::cout << "Total Errors: " << this->error_data.size() << std::endl;
+
+        return (true);
+    }
+
+    return (false);
 }
 
-void lexer_parser::lexer()
+void lexer_parser::lexer( std::vector< std::string > &tokens )
 {
     std::string line;
     std::string tokenz;
@@ -90,36 +106,53 @@ void lexer_parser::lexer()
                 if (std::regex_match(tokenz, rgx_ints) || std::regex_match(tokenz, rgx_decimals))
                 {
                     std::string temp;
-                    temp = tokenz.substr(0, tokenz.find("(") + 1 );
-                    tokenz = tokenz.substr(temp.length(), tokenz.find(")"));
+                    temp = tokenz.substr(0, tokenz.find("("));
+                    tokenz = tokenz.substr(temp.length() + 1, tokenz.find(")"));
                     tokenz.pop_back();
-                    temp += ")";
+                    //temp += ")";
 
-                    this->tokens.push_back(temp);
+                    tokens.push_back(temp);
                 }
 
-                this->tokens.push_back(tokenz);
+                tokens.push_back(tokenz);
             }
             else
                 this->error_data.push_back( "line " + std::to_string(count + 1) + ": invalid operation \"" + tokenz + "\"");
         }
-        this->tokens.push_back(" ");
+        tokens.push_back(" ");
     }
 
-    std::cout << "THE TOKENZ" << std::endl;
+    /*std::cout << "THE TOKENZ" << std::endl;
     for (unsigned int count = 0; count < this->tokens.size(); count++)
     {
         std::cout << this->tokens[count] << std::endl;
-    }
-
-    std::cout << "The Errors" << std::endl;
-    for (unsigned int count = 0; count < this->error_data.size(); count++)
-    {
-        std::cout << this->error_data[count] << std::endl;
-    }
+    }*/
 }
 
 void lexer_parser::parser()
 {
+    std::string line;
+    bool is_exit = false;
 
+    for (unsigned int count = 0; count < this->file_data.size(); count++)
+    {
+        line = this->file_data[count];
+
+        std::regex rgx_ints("^push( +)int(8|16|32)\\(-?[0-9]+\\)( *)"); //Checks for Push int 8 / 16 / 32
+        std::regex rgx_decimals("^push( +)(float|double)\\(-?[0-9]+(.[0-9]+)?\\)( *)");
+        std::regex rgx_modifications("^(dump|exit)( *)");
+        std::regex rgx_assert("^assert( +)(int(8|16|32)|float|double)\\(-?[0-9]+(.[0-9]+)?\\)( *)");
+        if (std::regex_match(line, rgx_ints) || std::regex_match(line, rgx_decimals) || std::regex_match(line, rgx_assert) )
+            continue ;
+        else
+            this->error_data.push_back( "line " + std::to_string(count + 1) + ": Syntax Error \"" + line + "\"");
+
+        if ( std::regex_match(line, rgx_modifications) && !is_exit)
+                is_exit = true;
+        else
+            this->error_data.push_back( "line " + std::to_string(count + 1) + ": Syntax Error -> Duplicate command \"exit\"");
+    }
+
+    if (!is_exit)
+        this->error_data.push_back( "Syntax Error -> Missing \"exit\"");
 }

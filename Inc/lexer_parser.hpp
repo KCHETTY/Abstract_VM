@@ -16,9 +16,8 @@ class lexer_parser
 
     public:
 
-        //void process_data(int count, char **file, std::vector < std::string > &file_data );
-        void process_data(int count, char **file);
-        void lexer();
+        bool process_data(int count, char **file, std::vector< std::string > &tokenz);
+        void lexer( std::vector< std::string > &tokenz );
         void parser();
         std::string trim( std::string line );
 };

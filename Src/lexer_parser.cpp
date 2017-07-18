@@ -119,14 +119,8 @@ void lexer_parser::lexer( std::vector< std::string > &tokens )
             else
                 this->error_data.push_back( "line " + std::to_string(count + 1) + ": invalid operation \"" + tokenz + "\"");
         }
-        tokens.push_back(" ");
+        //tokens.push_back(" ");
     }
-
-    /*std::cout << "THE TOKENZ" << std::endl;
-    for (unsigned int count = 0; count < this->tokens.size(); count++)
-    {
-        std::cout << this->tokens[count] << std::endl;
-    }*/
 }
 
 void lexer_parser::parser()

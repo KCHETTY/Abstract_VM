@@ -1,0 +1,3 @@
+push int8(43)
+print
+exit

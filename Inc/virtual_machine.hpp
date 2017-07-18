@@ -26,5 +26,8 @@ class virtual_machine
         void execute_commands();
         void push_operand( std::string op_type, std::string val );
         void dump();
+        void pop_deque();
+        void stack_assert( std::string type, std::string val );
+        void print();
 
 };

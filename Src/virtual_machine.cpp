@@ -32,12 +32,44 @@ void virtual_machine::dump()
     }
 }
 
+void virtual_machine::print()
+{
+    if ( 0 != this->stack[0]->getType() )
+        std::cout << "False Buddy" << std::endl;
+    std::cout << static_cast<char> (std::stoi(this->stack[0]->toString())) << std::endl;
+}
+
+void virtual_machine::stack_assert( std::string type, std::string val )
+{
+    int no_type = 0;
+
+    if (type.compare("int8") == 0)
+		no_type = eOperandType::INT8;
+	else if (type.compare("int16") == 0)
+		no_type = eOperandType::INT16;
+	else if (type.compare("int32") == 0)
+		no_type = eOperandType::INT32;
+	else if (type.compare("float") == 0)
+		no_type = eOperandType::FLOAT;
+	else if (type.compare("double") == 0)
+		no_type = eOperandType::DOUBLE;
+
+    if (no_type != this->stack[0]->getType() || val.compare(this->stack[0]->toString()))
+        std::cout << "False Buddy" << std::endl;
+}
+
+void virtual_machine::pop_deque()
+{
+    this->stack.pop_front();
+    this->stack.pop_front();
+}
+
 void virtual_machine::execute_commands()
 {
+    const IOperand * tmp = NULL;
+
     for (unsigned int count = 0; count < this->commands.size(); count++ )
     {
-        //std::cout << this->commands[count] << std::endl;
-
         if (this->commands[count].compare("push") == 0)
             push_operand( this->commands[count + 1], this->commands[count + 2]);
         else if (this->commands[count].compare("dump") == 0)
@@ -48,47 +80,40 @@ void virtual_machine::execute_commands()
         }
         else if (this->commands[count].compare("sub") == 0)
         {
-            const IOperand *tmp = *this->stack[0] - *this->stack[1];
-            this->stack.pop_front();
-            this->stack.pop_front();
+            tmp = *this->stack[0] - *this->stack[1];
+            pop_deque();
             this->stack.push_front(tmp);
 
         }
         else if (this->commands[count].compare("div") == 0)
         {
-            const IOperand *tmp = *this->stack[0] / *this->stack[1];
-            this->stack.pop_front();
-            this->stack.pop_front();
+            tmp = *this->stack[0] / *this->stack[1];
+            pop_deque();
             this->stack.push_front(tmp);
         }
         else if (this->commands[count].compare("mul") == 0)
         {
-            const IOperand *tmp = *this->stack[0] * *this->stack[1];
-            this->stack.pop_front();
-            this->stack.pop_front();
+            tmp = *this->stack[0] * *this->stack[1];
+            pop_deque();
             this->stack.push_front(tmp);
         }
         else if (this->commands[count].compare("add") == 0)
         {
-            const IOperand *tmp = *this->stack[0] + *this->stack[1];
-            this->stack.pop_front();
-            this->stack.pop_front();
+            tmp = *this->stack[0] + *this->stack[1];
+            pop_deque();
             this->stack.push_front(tmp);
         }
         else if (this->commands[count].compare("mod") == 0)
         {
-            const IOperand *tmp = *this->stack[0] % *this->stack[1];
-            this->stack.pop_front();
-            this->stack.pop_front();
+            tmp = *this->stack[0] % *this->stack[1];
+            pop_deque();
             this->stack.push_front(tmp);
         }
         else if (this->commands[count].compare("assert") == 0)
-            std::cout << "some stuff" << std::endl;
+            stack_assert( this->commands[count + 1], this->commands[count + 2] );
         else if (this->commands[count].compare("print") == 0)
-            std::cout << "some stuff" << std::endl;
+            print();
         else if (this->commands[count].compare("exit") == 0)
-            std::cout << "some stuff" << std::endl;
+            break ;
     }
-
-    std::cout << "segoo" << std::endl;
 }

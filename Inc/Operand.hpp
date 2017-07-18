@@ -101,7 +101,7 @@ template<eOperandType type, class T> Operand<type, T>::Operand( T tmp_val ,std::
     this->str_value = str_tmp_val;
     this->num_value = tmp_val;
     //std::cout << this->str_value << std::endl;
-    std::cout << sizeof(this->num_value) << std::endl;
+    //std::cout << sizeof(this->num_value) << std::endl;
 }
 
 template<eOperandType type, class T> std::string const & Operand<type, T>::toString() const

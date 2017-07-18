@@ -35,9 +35,10 @@ bool lexer_parser::process_data(int count, char **file, std::vector< std::string
         {
             while (!ReadFile.eof())
             {
-                //ReadFile >> data;
                 std::getline(ReadFile, data);
                 data = trim( data );
+                if ( (data[0] == ';') && (data.length() == 1 || data.length() > 1))
+                    continue ;
                 this->file_data.push_back(data);
             }
         }
@@ -52,8 +53,13 @@ bool lexer_parser::process_data(int count, char **file, std::vector< std::string
         {
             line = trim( line );
             std::cout << line << std::endl;
+
             if ( line.compare(";;") == 0)
                 break ;
+
+            if ( line[0] == ';' && (line.length() == 1 || line.length() > 1))
+                continue ;
+
             this->file_data.push_back(line);
 
         }
@@ -92,6 +98,8 @@ void lexer_parser::lexer( std::vector< std::string > &tokens )
     for (unsigned int count = 0; count < this->file_data.size(); count++)
     {
         line = this->file_data[count];
+        if (line.compare("") == 0)
+            continue ;
         for (unsigned int length = 0; length < line.length(); length++)
         {
             tokenz = line.substr(0, line.find(" "));
@@ -109,7 +117,6 @@ void lexer_parser::lexer( std::vector< std::string > &tokens )
                     temp = tokenz.substr(0, tokenz.find("("));
                     tokenz = tokenz.substr(temp.length() + 1, tokenz.find(")"));
                     tokenz.pop_back();
-                    //temp += ")";
 
                     tokens.push_back(temp);
                 }
@@ -119,14 +126,14 @@ void lexer_parser::lexer( std::vector< std::string > &tokens )
             else
                 this->error_data.push_back( "line " + std::to_string(count + 1) + ": invalid operation \"" + tokenz + "\"");
         }
-        //tokens.push_back(" ");
+        tokens.push_back(" ");
     }
 }
 
 void lexer_parser::parser()
 {
     std::string line;
-    bool is_exit = false;
+    int is_exit = 0;
 
     for (unsigned int count = 0; count < this->file_data.size(); count++)
     {
@@ -134,19 +141,24 @@ void lexer_parser::parser()
 
         std::regex rgx_ints("^push( +)int(8|16|32)\\(-?[0-9]+\\)( *)"); //Checks for Push int 8 / 16 / 32
         std::regex rgx_decimals("^push( +)(float|double)\\(-?[0-9]+(.[0-9]+)?\\)( *)");
-        std::regex rgx_modifications("^(dump|exit)( *)");
+        std::regex rgx_modifications("^(pop|dump|add|mul|sub|div|mod|print|exit)( *)");
         std::regex rgx_assert("^assert( +)(int(8|16|32)|float|double)\\(-?[0-9]+(.[0-9]+)?\\)( *)");
-        if (std::regex_match(line, rgx_ints) || std::regex_match(line, rgx_decimals) || std::regex_match(line, rgx_assert) )
+
+        if (line.find("exit") != std::string::npos)
+            is_exit++;
+
+        if (is_exit > 1)
+        {
+            this->error_data.push_back( "line " + std::to_string(count + 1) + ": Syntax Error -> Duplicate command \"exit\"");
+            is_exit = 1;
+        }
+
+        if (std::regex_match(line, rgx_ints) || std::regex_match(line, rgx_decimals) || std::regex_match(line, rgx_assert) || std::regex_match(line, rgx_modifications) || line.compare("") == 0 )
             continue ;
         else
             this->error_data.push_back( "line " + std::to_string(count + 1) + ": Syntax Error \"" + line + "\"");
-
-        if ( std::regex_match(line, rgx_modifications) && !is_exit)
-                is_exit = true;
-        else
-            this->error_data.push_back( "line " + std::to_string(count + 1) + ": Syntax Error -> Duplicate command \"exit\"");
     }
 
-    if (!is_exit)
+    if (is_exit == 0)
         this->error_data.push_back( "Syntax Error -> Missing \"exit\"");
 }

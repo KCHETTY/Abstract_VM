@@ -3,9 +3,18 @@ push int32(33)
 add
 push float(44.55)
 mul
+
 push double(42.42)
 push int32(42)
+
+;first exit
+
+exit
+
+;first new one
+
 dump
 pop
+
 dump
 exit

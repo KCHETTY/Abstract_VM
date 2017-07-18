@@ -4,15 +4,9 @@
 
 int main(int argc, char **argv)
 {
-    lexer_parser input;
-    virtual_machine test;
+    virtual_machine test(argc, argv);
 
-    input.process_data(argc, argv);
+    test.execute_commands();
 
-    //Operand <INT8, int8_t> template_test;
-
-    //std::cout << template_test.getType() std::endl;
-
-    test.create_test("4");
     return (0);
 }

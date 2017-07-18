@@ -1,21 +1,7 @@
-tetetst basdhf
-dfjs f
- hdfjkn 
-
-
-sdfsdlkfd
-
-
-dlfsdf
-fdfsdf
-cvdxvfsgsweg
-
-fd
-gvsfgvsfgbsfb
-f
-sfg
-sd
-gsd
-
-
-fgsdgdsd
+        push int8(7)
+push    int16(6)
+    mull
+asset       int16(8)
+test
+push int98()
+exit

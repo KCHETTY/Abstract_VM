@@ -17,7 +17,7 @@ IOperand const * factory::createInt16( std::string const & value ) const
 
 IOperand const * factory::createInt32( std::string const & value ) const
 {
-    return ( new Operand<eOperandType::INT32, int32_t>::Operand( static_cast<int32_t> (std::stoi(value, NULL)) , value ));
+    return ( new Operand<eOperandType::INT32, int32_t>::Operand( static_cast<int32_t> (std::stol(value, NULL)) , value ));
 }
 
 IOperand const * factory::createfloat( std::string const & value ) const

@@ -11,3 +11,5 @@ https://stackoverflow.com/questions/332030/when-should-static-cast-dynamic-cast-
 http://www.cplusplus.com/reference/string/stod/
 http://www.cplusplus.com/reference/cstdint/
 https://developer.mbed.org/handbook/C-Data-Types
+http://en.cppreference.com/w/cpp/types/numeric_limits
+http://edoras.sdsu.edu/doc/matlab/techdoc/ref/int8.html

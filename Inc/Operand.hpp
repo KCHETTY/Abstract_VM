@@ -12,6 +12,24 @@ template <eOperandType type, class T> class Operand : public IOperand
 
     public:
 
+        class Div0Exception : public std::exception
+        {
+            virtual const char * what() const throw()
+            {
+                return ("Div: Mod by zero is undefined.");
+            }
+        } Div0E;
+
+        class OverflowException : public std::exception
+        {
+            virtual const char * what() const  throw()
+            {
+                return ("Overflow/Underflow reached on type");
+            }
+        } Oexep;
+
+        void check_over_under_flow(eOperandType type_tmp, long double value) const;
+
         Operand( T tmp_val , std::string str_tmp_val );
 
         int getPrecision( void ) const; // Precision of the type of the instance
@@ -30,8 +48,23 @@ template <eOperandType type, class T> class Operand : public IOperand
         ~Operand( void ) {}
 };
 
+template<eOperandType type, class T> void Operand<type, T>::check_over_under_flow(eOperandType type_tmp, long double value) const
+{
+    if (type_tmp == eOperandType::INT8 && (value < INT8_MIN || value > INT8_MAX))
+        throw Oexep;
+    else if (type_tmp == eOperandType::INT16 && (value < INT16_MIN || value > INT16_MAX))
+        throw Oexep;
+    else if (type_tmp == eOperandType::INT32 && (value < INT32_MIN || value > INT32_MAX))
+        throw Oexep;
+    else if (type_tmp == eOperandType::FLOAT && (value < -1.175494e+37 || value > 3.40282e+38))
+        throw Oexep;
+    else if (type_tmp == eOperandType::DOUBLE && (value < -2.22507e+307 || value > 1.79769e+308))
+        throw Oexep;
+}
+
 template<eOperandType type, class T> IOperand const * Operand<type, T>::create_obj(eOperandType type_tmp, long double value) const
 {
+    check_over_under_flow(type_tmp, value);
     int tmp = static_cast<int> (value);
 
     switch (type_tmp)
@@ -98,6 +131,8 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
 
 template<eOperandType type, class T> Operand<type, T>::Operand( T tmp_val ,std::string str_tmp_val )
 {
+    long double tmp = std::stold(str_tmp_val);
+    check_over_under_flow(type, tmp);
     this->str_value = str_tmp_val;
     this->num_value = tmp_val;
 }

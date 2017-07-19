@@ -7,7 +7,7 @@ virtual_machine::virtual_machine()
 
 virtual_machine::virtual_machine( int argc, char **argv) : virtual_machine()
 {
-    this->is_error = this->input.process_data(argc, argv, this->commands);
+    this->input.process_data(argc, argv, this->commands);
 }
 
 void virtual_machine::push_operand( std::string op_type, std::string val )
@@ -34,13 +34,25 @@ void virtual_machine::dump()
 
 void virtual_machine::print()
 {
+    if (this->stack.size() < 1)
+        excp.invalid_stack_size();
+
     if ( 0 != this->stack[0]->getType() )
-        std::cout << "False Buddy" << std::endl;
+        excp.print_fail();
     std::cout << static_cast<char> (std::stoi(this->stack[0]->toString())) << std::endl;
+}
+
+void virtual_machine::check_stack()
+{
+    if (this->stack.size() < 2)
+        excp.invalid_stack_size();
 }
 
 void virtual_machine::stack_assert( std::string type, std::string val )
 {
+    if (this->stack.size() < 1)
+        excp.invalid_stack_size();
+
     int no_type = 0;
 
     if (type.compare("int8") == 0)
@@ -55,7 +67,7 @@ void virtual_machine::stack_assert( std::string type, std::string val )
 		no_type = eOperandType::DOUBLE;
 
     if (no_type != this->stack[0]->getType() || val.compare(this->stack[0]->toString()))
-        std::cout << "False Buddy" << std::endl;
+        excp.assert_fail();
 }
 
 void virtual_machine::pop_deque()
@@ -66,54 +78,69 @@ void virtual_machine::pop_deque()
 
 void virtual_machine::execute_commands()
 {
-    const IOperand * tmp = NULL;
-
-    for (unsigned int count = 0; count < this->commands.size(); count++ )
+    try
     {
-        if (this->commands[count].compare("push") == 0)
-            push_operand( this->commands[count + 1], this->commands[count + 2]);
-        else if (this->commands[count].compare("dump") == 0)
-            dump();
-        else if (this->commands[count].compare("pop") == 0)
-        {
-            this->stack.pop_front();
-        }
-        else if (this->commands[count].compare("sub") == 0)
-        {
-            tmp = *this->stack[0] - *this->stack[1];
-            pop_deque();
-            this->stack.push_front(tmp);
+        const IOperand * tmp = NULL;
 
-        }
-        else if (this->commands[count].compare("div") == 0)
+        for (unsigned int count = 0; count < this->commands.size(); count++ )
         {
-            tmp = *this->stack[0] / *this->stack[1];
-            pop_deque();
-            this->stack.push_front(tmp);
+            if (this->commands[count].compare("push") == 0)
+                push_operand( this->commands[count + 1], this->commands[count + 2]);
+            else if (this->commands[count].compare("dump") == 0)
+                dump();
+            else if (this->commands[count].compare("pop") == 0)
+            {
+                if (this->stack.size() < 1)
+                    excp.invalid_stack_size();
+                this->stack.pop_front();
+            }
+            else if (this->commands[count].compare("sub") == 0)
+            {
+                check_stack();
+                tmp = *this->stack[0] - *this->stack[1];
+                pop_deque();
+                this->stack.push_front(tmp);
+
+            }
+            else if (this->commands[count].compare("div") == 0)
+            {
+                check_stack();
+                tmp = *this->stack[0] / *this->stack[1];
+                pop_deque();
+                this->stack.push_front(tmp);
+            }
+            else if (this->commands[count].compare("mul") == 0)
+            {
+                check_stack();
+                tmp = *this->stack[0] * *this->stack[1];
+                pop_deque();
+                this->stack.push_front(tmp);
+            }
+            else if (this->commands[count].compare("add") == 0)
+            {
+                check_stack();
+                tmp = *this->stack[0] + *this->stack[1];
+                pop_deque();
+                this->stack.push_front(tmp);
+            }
+            else if (this->commands[count].compare("mod") == 0)
+            {
+                check_stack();
+                tmp = *this->stack[0] % *this->stack[1];
+                pop_deque();
+                this->stack.push_front(tmp);
+            }
+            else if (this->commands[count].compare("assert") == 0)
+                stack_assert( this->commands[count + 1], this->commands[count + 2] );
+            else if (this->commands[count].compare("print") == 0)
+                print();
+            else if (this->commands[count].compare("exit") == 0)
+                break ;
         }
-        else if (this->commands[count].compare("mul") == 0)
-        {
-            tmp = *this->stack[0] * *this->stack[1];
-            pop_deque();
-            this->stack.push_front(tmp);
-        }
-        else if (this->commands[count].compare("add") == 0)
-        {
-            tmp = *this->stack[0] + *this->stack[1];
-            pop_deque();
-            this->stack.push_front(tmp);
-        }
-        else if (this->commands[count].compare("mod") == 0)
-        {
-            tmp = *this->stack[0] % *this->stack[1];
-            pop_deque();
-            this->stack.push_front(tmp);
-        }
-        else if (this->commands[count].compare("assert") == 0)
-            stack_assert( this->commands[count + 1], this->commands[count + 2] );
-        else if (this->commands[count].compare("print") == 0)
-            print();
-        else if (this->commands[count].compare("exit") == 0)
-            break ;
     }
+    catch (std::exception &e)
+    {
+        std::cout << e.what() << std:: endl;
+    }
+
 }

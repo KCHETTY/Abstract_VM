@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Exceptions.hpp"
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -13,10 +15,11 @@ class lexer_parser
         std::vector< std::string > tokens;
         std::vector< std::string > file_data;
         std::vector< std::string > error_data;
+        Exceptions excp;
 
     public:
 
-        bool process_data(int count, char **file, std::vector< std::string > &tokenz);
+        void process_data(int count, char **file, std::vector< std::string > &tokenz);
         void lexer( std::vector< std::string > &tokenz );
         void parser();
         std::string trim( std::string line );

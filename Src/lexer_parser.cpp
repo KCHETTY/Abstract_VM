@@ -24,7 +24,7 @@ std::string lexer_parser::trim( std::string line )
     return (tmp);
 }
 
-bool lexer_parser::process_data(int count, char **file, std::vector< std::string > &tokenz)
+void lexer_parser::process_data(int count, char **file, std::vector< std::string > &tokenz)
 {
     if (count > 1)
     {
@@ -43,7 +43,7 @@ bool lexer_parser::process_data(int count, char **file, std::vector< std::string
             }
         }
         else
-            std::cout << "Invalid File" << std::endl;
+            excp.invalid_file();
 
         ReadFile.close();
     }
@@ -83,11 +83,8 @@ bool lexer_parser::process_data(int count, char **file, std::vector< std::string
             std::cout << this->error_data[counter] << std::endl;
         }
         std::cout << "Total Errors: " << this->error_data.size() << std::endl;
-
-        return (true);
+        excp.error();
     }
-
-    return (false);
 }
 
 void lexer_parser::lexer( std::vector< std::string > &tokens )
@@ -160,5 +157,5 @@ void lexer_parser::parser()
     }
 
     if (is_exit == 0)
-        this->error_data.push_back( "Syntax Error -> Missing \"exit\"");
+        excp.exit_missing();
 }

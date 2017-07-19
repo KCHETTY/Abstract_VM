@@ -4,9 +4,9 @@
 
 int main(int argc, char **argv)
 {
-    virtual_machine test(argc, argv);
+    virtual_machine vm(argc, argv);
 
-    test.execute_commands();
+    vm.execute_commands();
 
     return (0);
 }

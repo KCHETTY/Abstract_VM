@@ -1,6 +1,7 @@
 #pragma once
 
 #include "factory.hpp"
+#include "Exceptions.hpp"
 #include "lexer_parser.hpp"
 
 #include <deque>
@@ -11,6 +12,7 @@ class virtual_machine
 
         lexer_parser input;
         factory Tfactory;
+        Exceptions excp;
 
         std::deque < IOperand const * > stack;
         std::vector < std::string > commands;
@@ -29,5 +31,6 @@ class virtual_machine
         void pop_deque();
         void stack_assert( std::string type, std::string val );
         void print();
+        void check_stack();
 
 };

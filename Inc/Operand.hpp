@@ -64,7 +64,6 @@ template<eOperandType type, class T> void Operand<type, T>::check_over_under_flo
 
 template<eOperandType type, class T> IOperand const * Operand<type, T>::create_obj(eOperandType type_tmp, long double value) const
 {
-    check_over_under_flow(type_tmp, value);
     int tmp = static_cast<int> (value);
 
     switch (type_tmp)

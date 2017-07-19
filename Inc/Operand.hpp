@@ -45,7 +45,10 @@ template <eOperandType type, class T> class Operand : public IOperand
 
 
         std::string const & toString( void ) const; // String representation of the instance
-        ~Operand( void ) {}
+        ~Operand( void )
+        {
+            //std::cout << "OPerand Dead" << std::endl;
+        }
 };
 
 template<eOperandType type, class T> void Operand<type, T>::check_over_under_flow(eOperandType type_tmp, long double value) const

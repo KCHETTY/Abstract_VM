@@ -74,8 +74,22 @@ void virtual_machine::stack_assert( std::string type, std::string val )
 
 void virtual_machine::pop_deque()
 {
+    for (int i = 0; i < 2; i++)
+    {
+        delete this->stack[i];
+    }
+
     this->stack.pop_front();
     this->stack.pop_front();
+}
+
+void virtual_machine::clear_stack()
+{
+    for (unsigned int count = 0; count < this->stack.size(); count++)
+    {
+        delete this->stack[count];
+    }
+    this->stack.clear();
 }
 
 void virtual_machine::execute_commands()
@@ -138,11 +152,15 @@ void virtual_machine::execute_commands()
             else if (this->commands[count].compare("print") == 0)
                 print();
             else if (this->commands[count].compare("exit") == 0)
+            {
+                clear_stack();
                 break ;
+            }
         }
     }
     catch (std::exception &e)
     {
+        clear_stack();
         std::cout << e.what() << std:: endl;
     }
 

@@ -33,5 +33,6 @@ class virtual_machine
         void stack_assert( std::string type, std::string val );
         void print();
         void check_stack();
+        void clear_stack();
 
 };

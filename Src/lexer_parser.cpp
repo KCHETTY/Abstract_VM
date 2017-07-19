@@ -60,15 +60,17 @@ void lexer_parser::process_data(int count, char **file, std::vector< std::string
                 continue ;
 
             this->file_data.push_back(line);
-
         }
+        std::cout << std::endl;
     }
 
     if (this->file_data.size() == 0)
         excp.empty_file();
 
     lexer( tokenz );
-    parser();
+
+    if (this->error_data.size() == 0)
+        parser();
 
     if (this->error_data.size() > 0)
     {

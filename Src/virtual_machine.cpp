@@ -2,12 +2,14 @@
 
 virtual_machine::virtual_machine()
 {
-    this->is_error = false;
+    this->arg_count = 0;
+    this->arg = NULL;
 }
 
 virtual_machine::virtual_machine( int argc, char **argv) : virtual_machine()
 {
-    this->input.process_data(argc, argv, this->commands);
+    this->arg_count = argc;
+    this->arg = argv;
 }
 
 void virtual_machine::push_operand( std::string op_type, std::string val )
@@ -81,6 +83,7 @@ void virtual_machine::execute_commands()
     try
     {
         const IOperand * tmp = NULL;
+        this->input.process_data(this->arg_count, this->arg, this->commands);
 
         for (unsigned int count = 0; count < this->commands.size(); count++ )
         {

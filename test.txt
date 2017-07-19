@@ -1,7 +1,1 @@
-push int8(7)
-push int16(6)
-dump
-mul
-dump
 
-exit

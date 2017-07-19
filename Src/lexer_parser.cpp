@@ -37,7 +37,7 @@ void lexer_parser::process_data(int count, char **file, std::vector< std::string
             {
                 std::getline(ReadFile, data);
                 data = trim( data );
-                if ( (data[0] == ';') && (data.length() == 1 || data.length() > 1))
+                if ( ((data[0] == ';') && (data.length() == 1 || data.length() > 1)) || (data.compare("") == 0) )
                     continue ;
                 this->file_data.push_back(data);
             }
@@ -52,12 +52,11 @@ void lexer_parser::process_data(int count, char **file, std::vector< std::string
         for ( std::string line; std::getline(std::cin, line); )
         {
             line = trim( line );
-            std::cout << line << std::endl;
 
             if ( line.compare(";;") == 0)
                 break ;
 
-            if ( line[0] == ';' && (line.length() == 1 || line.length() > 1))
+            if ( ((line[0] == ';') && (line.length() == 1 || line.length() > 1)) || (line.compare("") == 0))
                 continue ;
 
             this->file_data.push_back(line);
@@ -65,16 +64,11 @@ void lexer_parser::process_data(int count, char **file, std::vector< std::string
         }
     }
 
-    std::cout << "Them TESTS" << std::endl;
-    for (unsigned int count = 0; count < this->file_data.size(); count++)
-    {
-        std::cout << this->file_data[count] << std::endl;
-    }
+    if (this->file_data.size() == 0)
+        excp.empty_file();
 
     lexer( tokenz );
-
-    if (this->error_data.size() == 0)
-        parser();
+    parser();
 
     if (this->error_data.size() > 0)
     {

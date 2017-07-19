@@ -17,7 +17,8 @@ class virtual_machine
         std::deque < IOperand const * > stack;
         std::vector < std::string > commands;
 
-        bool is_error;
+        int arg_count;
+        char **arg;
 
         virtual_machine();
 

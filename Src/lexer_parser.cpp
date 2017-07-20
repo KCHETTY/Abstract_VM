@@ -49,15 +49,11 @@ void lexer_parser::handle_comment( std::string &line )
 
     if ((tmp = line.find( ";" )) != std::string::npos)
     {
-        if (line[tmp + 1] == ';' && line[tmp] == ';')
-        {
-            line = line.substr(tmp, tmp + 1);
-        }
+        if (line[tmp + 1] == ';' && line[tmp] == ';' && line.size() < 3)
+			return ;
 
         line = line.substr(0, tmp);
     }
-
-
 }
 
 void lexer_parser::process_data(int count, char **file, std::vector< std::string > &tokenz)

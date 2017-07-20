@@ -1,0 +1,2 @@
+push int8(10) ; Add 10 to stack.
+push int16(300) ;Add 300 to stack.

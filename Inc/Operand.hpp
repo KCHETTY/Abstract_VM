@@ -16,7 +16,7 @@ template <eOperandType type, class T> class Operand : public IOperand
         {
             virtual const char * what() const throw()
             {
-                return ("Div: Mod by zero is undefined.");
+                return ("Div/Mod by zero is undefined.");
             }
         } Div0E;
 
@@ -30,7 +30,7 @@ template <eOperandType type, class T> class Operand : public IOperand
 
         void check_over_under_flow(eOperandType type_tmp, long double value) const;
 
-        Operand( T tmp_val , std::string str_tmp_val );
+        Operand( std::string str_tmp_val );
 
         int getPrecision( void ) const; // Precision of the type of the instance
         eOperandType getType( void ) const; // Type of the instance
@@ -73,15 +73,15 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::create_o
     switch (type_tmp)
     {
         case eOperandType::INT8:
-            return ( new Operand<eOperandType::INT8, int8_t>::Operand( static_cast<int8_t> (value), std::to_string(tmp) ) );
+            return ( new Operand<eOperandType::INT8, int8_t>::Operand( std::to_string(tmp) ));
         case eOperandType::INT16:
-            return ( new Operand<eOperandType::INT16, int16_t>::Operand( static_cast<int16_t> (value), std::to_string(tmp) ) );
+            return ( new Operand<eOperandType::INT16, int16_t>::Operand( std::to_string(tmp) ));
         case eOperandType::INT32:
-            return ( new Operand<eOperandType::INT32, int32_t>::Operand( static_cast<int32_t> (value), std::to_string(tmp) ) );
+            return ( new Operand<eOperandType::INT32, int32_t>::Operand( std::to_string(tmp) ));
         case eOperandType::FLOAT:
-            return ( new Operand<eOperandType::FLOAT, float_t>::Operand( static_cast<float_t> (value) , std::to_string(value) ));
+            return ( new Operand<eOperandType::FLOAT, float_t>::Operand( std::to_string(value) ));
         case eOperandType::DOUBLE:
-            return ( new Operand<eOperandType::DOUBLE, double_t>::Operand( static_cast<double_t> (value), std::to_string(value)));
+            return ( new Operand<eOperandType::DOUBLE, double_t>::Operand( std::to_string(value) ));
     }
 
     return (NULL);
@@ -116,6 +116,9 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
 
 template<eOperandType type, class T> IOperand const * Operand<type, T>::operator/( IOperand const & obj ) const
 {
+    if (obj.toString().compare("0") == 0)
+        throw Div0E;
+
     long double tmp = std::stold(this->str_value) / std::stold(obj.toString());
 
     if (obj.getPrecision() < this->getPrecision())
@@ -125,6 +128,9 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
 
 template<eOperandType type, class T> IOperand const * Operand<type, T>::operator%( IOperand const & obj ) const
 {
+    if (obj.toString().compare("0") == 0)
+        throw Div0E;
+
     long double tmp = fmod(std::stold(this->str_value) , std::stold(obj.toString()));
 
     if (obj.getPrecision() < this->getPrecision())
@@ -132,12 +138,11 @@ template<eOperandType type, class T> IOperand const * Operand<type, T>::operator
     return ( create_obj(obj.getType(), tmp) );
 }
 
-template<eOperandType type, class T> Operand<type, T>::Operand( T tmp_val ,std::string str_tmp_val )
+template<eOperandType type, class T> Operand<type, T>::Operand( std::string str_tmp_val )
 {
     long double tmp = std::stold(str_tmp_val);
     check_over_under_flow(type, tmp);
     this->str_value = str_tmp_val;
-    this->num_value = tmp_val;
 }
 
 template<eOperandType type, class T> std::string const & Operand<type, T>::toString() const

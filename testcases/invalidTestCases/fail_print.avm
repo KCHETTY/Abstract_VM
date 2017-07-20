@@ -1,0 +1,3 @@
+push int32(1000)
+print
+exit

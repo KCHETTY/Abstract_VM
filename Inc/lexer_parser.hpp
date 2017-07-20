@@ -22,5 +22,6 @@ class lexer_parser
         void process_data(int count, char **file, std::vector< std::string > &tokenz);
         void lexer( std::vector< std::string > &tokenz );
         void parser();
+        void handle_comment( std::string &line );
         std::string trim( std::string line );
 };

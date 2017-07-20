@@ -1,0 +1,4 @@
+push int32(0)
+push int16(4000)
+mod
+exit

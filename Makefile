@@ -1,6 +1,6 @@
 CLANG =	clang++
 
-NAME = Abstract_VM
+NAME = AbstractVM
 
 CFLAGS = -Wall -Werror -Wextra
 

@@ -24,6 +24,23 @@ std::string lexer_parser::trim( std::string line )
     return (tmp);
 }
 
+void lexer_parser::handle_comment( std::string &line )
+{
+    size_t tmp = 0;
+
+    if ((tmp = line.find( ";" )) != std::string::npos)
+    {
+        if (line[tmp + 1] == ';' && line[tmp] == ';')
+        {
+            line = line.substr(tmp, tmp + 1);
+        }
+
+        line = line.substr(0, tmp);
+    }
+
+
+}
+
 void lexer_parser::process_data(int count, char **file, std::vector< std::string > &tokenz)
 {
     if (count > 1)
@@ -37,7 +54,8 @@ void lexer_parser::process_data(int count, char **file, std::vector< std::string
             {
                 std::getline(ReadFile, data);
                 data = trim( data );
-                if ( ((data[0] == ';') && (data.length() == 1 || data.length() > 1)) || (data.compare("") == 0) )
+                handle_comment( data );
+                if (data.compare("") == 0)
                     continue ;
                 this->file_data.push_back(data);
             }
@@ -53,11 +71,12 @@ void lexer_parser::process_data(int count, char **file, std::vector< std::string
         {
             line = trim( line );
 
+            handle_comment( line );
+            if (line.compare("") == 0)
+                continue ;
+
             if ( line.compare(";;") == 0)
                 break ;
-
-            if ( ((line[0] == ';') && (line.length() == 1 || line.length() > 1)) || (line.compare("") == 0))
-                continue ;
 
             this->file_data.push_back(line);
         }

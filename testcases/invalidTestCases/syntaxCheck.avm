@@ -1,0 +1,9 @@
+push int8()
+push int33(100)
+push flaot(400)
+push doubel(100000.44)
+push int16(a)
+damp
+asert
+pwint
+exit

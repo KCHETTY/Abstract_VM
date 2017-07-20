@@ -1,0 +1,3 @@
+push int32(5)
+mul
+exit

@@ -1,5 +1,24 @@
 #include "../Inc/lexer_parser.hpp"
 
+lexer_parser::lexer_parser()
+{
+	return ;
+}
+
+lexer_parser::lexer_parser( std::vector< std::string > data )
+{
+	for (unsigned int count = 0; count < data.size(); count++)
+    {
+        this->file_data.push_back(data[count]);
+    }
+}
+
+lexer_parser::~lexer_parser()
+{
+    this->file_data.clear();
+    this->error_data.clear();
+}
+
 std::string lexer_parser::trim( std::string line )
 {
     std::string tmp;

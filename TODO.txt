@@ -1,3 +1,0 @@
-lexer/parser : done
-command execution : done
-errors : done

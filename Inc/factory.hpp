@@ -19,5 +19,8 @@ class factory
 
     public:
 
+        factory();
+
         IOperand const * createOperand( eOperandType type, std::string const & value ) const;
+        virtual ~factory();
 };

@@ -1,5 +1,15 @@
 #include "../Inc/factory.hpp"
 
+factory::factory()
+{
+	return ;
+}
+
+factory::~factory()
+{
+	return ;
+}
+
 IOperand const * factory::createOperand( eOperandType type, std::string const & value ) const
 {
     return ((this->*func_arr[type])(value));
